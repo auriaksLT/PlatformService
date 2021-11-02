@@ -32,6 +32,9 @@ namespace PlatformService
             services.AddDbContext<AppDbContext>(opt => 
                 opt.UseInMemoryDatabase("InMem"));
 
+            // if somebody asks for IPlatformRepo UI then we will give a concrete class PlatformRepo    
+            services.AddScoped<IPlatformRepo, PlatformRepo>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +62,9 @@ namespace PlatformService
             {
                 endpoints.MapControllers();
             });
+
+            // Start DB context setup, access PrepDb class directly as it is static
+            PrepDb.PrepPopulation(app);
         }
     }
 }
