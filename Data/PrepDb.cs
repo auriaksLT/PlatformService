@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using PlatformService.Models;
 
 namespace PlatformService.Data
 {
@@ -22,7 +25,24 @@ namespace PlatformService.Data
 
          private static void SeedData(AppDbContext context)
         {
-            
+            // Check if there is any data, related to the platforms in the DB
+            if(!context.Platforms.Any())
+            {
+                Console.WriteLine(" --> Seeding Data ...");
+
+                // Add to context Database
+                context.Platforms.AddRange(
+                    new Platform(){ Name = "Dot Net", Publisher = "Microsoft", Cost="Free" },
+                    new Platform(){ Name = "SQL Server Express", Publisher = "Microsoft", Cost="Free" },
+                    new Platform(){ Name = "Kubernetes", Publisher = "CNC Computing", Cost="Free" }
+                );
+
+                context.SaveChanges();
+            }
+            else
+            {
+                Console.WriteLine(" --> We already have Data");
+            }
         }
     }
 }
