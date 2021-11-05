@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PlatformService.Data;
+using PlatformService.SyncDataServices.Http;
 
 namespace PlatformService
 {
@@ -34,6 +35,9 @@ namespace PlatformService
 
             // if somebody asks for IPlatformRepo UI then we will give a concrete class PlatformRepo    
             services.AddScoped<IPlatformRepo, PlatformRepo>();
+
+            // using http client factory to be mannaged by (secure comms)
+            services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
